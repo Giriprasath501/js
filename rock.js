@@ -2,46 +2,64 @@ function getComputerChoice(){
     const choices = ['rock','paper','scissor'];
     const getchoice = Math.floor(Math.random()*choices.length);
     const compchoice = choices[getchoice];
-    console.log("comp:",compchoice)
+    const Comp = document.querySelector(".comp");
+    Comp.textContent = `comptr: ${compchoice};`
     return compchoice;
 }
 
-function getHumanChoice() {
-    const choice = prompt("choose any ").toLowerCase();
-    console.log("user:",choice)
-    return choice
-}
+
 
 function playgame() {
     let humanscore = 0;
     let compuetrscore = 0;
-    let Round = 0;
+    
+    const Result = document.querySelector(".result");
+    const Score = document.querySelector(".score");
+    const Winner = document.querySelector(".winner");
     
     function playRound(humanChoice, computerChoice) {
         if (humanChoice === computerChoice) {
-            console.log("It's a tie!");
+            Result.textContent = "its a tie";
         } else if (
-            (humanChoice === "rock" && computerChoice === "scissors") ||
+            (humanChoice === "rock" && computerChoice === "scissor") ||
             (humanChoice === "paper" && computerChoice === "rock") ||
-            (humanChoice === "scissors" && computerChoice === "paper")
+            (humanChoice === "scissor" && computerChoice === "paper")
         ) {
-            console.log("You win!");
+            Result.textContent = "you win";
             humanscore = humanscore + 1; // ✅ edited increment
         } else {
-            console.log("You lose!");
+            Result.textContent = "you lose";
             compuetrscore = compuetrscore + 1; // ✅ edited increment
         }
-    }
+        Score.textContent = `player: ${humanscore} computer: ${compuetrscore}`;
 
-    while(Round < 5){
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-        playRound(humanSelection, computerSelection);
-        Round++;
-    }
+        if (humanscore === 5 || compuetrscore === 5) {
+            const winner = humanscore === 5 ? "You win the game!" : "Computer wins the game!";
+            Winner.textContent = winner;
 
-    console.log("human", humanscore);
-    console.log("comp:", compuetrscore);
+    
+            document.querySelectorAll("button").forEach(btn => {
+            btn.disabled = true;
+         });
+       }
+    }
+    
+
+    document.querySelectorAll("button").forEach(button =>{
+        button.addEventListener("click",() =>{
+            const playerSelection = button.value;
+            const computerSelection = getComputerChoice();
+            playRound(playerSelection, computerSelection);
+        });
+    });
+
+    
+
+    
+
+
+
+    
 }
 
 playgame();
